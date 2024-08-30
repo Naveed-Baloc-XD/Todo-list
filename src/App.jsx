@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <main className="h-[100vh] bg-slate-300">
+      <main className="h-auto bg-slate-300">
         <Navbar />
         <RemainSec />
       </main>

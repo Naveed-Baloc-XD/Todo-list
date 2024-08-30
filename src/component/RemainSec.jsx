@@ -1,44 +1,43 @@
-import React from "react";
+import { React, useRef } from "react";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
-import { MdDeleteSweep } from "react-icons/md";
+import { BiEditAlt } from "react-icons/bi";
+import { TiDelete } from "react-icons/ti";
+import { IoIosCheckmarkCircleOutline, IoIosCopy } from "react-icons/io";
 import { v4 as uuidv4 } from "uuid";
 
 const RemainSec = () => {
   const [todo, settodo] = useState("");
   const [Todos, setTodos] = useState([]);
 
+  // ----------------------------------------
   const handleTextAdd = () => {
-    setTodos([...Todos, { id: uuidv4(), todo, iscompleted: false }]);
+    setTodos([...Todos, { id: uuidv4(), todo }]);
     settodo("");
     console.log(Todos);
   };
   const handleChange = (e) => {
     settodo(e.target.value);
   };
-  // ---------------- CheckBox Function ---------------
-  const handleCheckbox = (e) => {
-    let id = e.target.name;
-    console.log(`this is id ${id}`);
-    let index = Todos.findIndex((item) => {
-      return item.id === id;
-    });
-    console.log(`indexxxx ${index}`);
+  // -----------Completed Function--------------
 
-    let newTodos = [...Todos];
-    newTodos[index].iscompleted = !newTodos[index].iscompleted;
+  const taskId = uuidv4();
 
-    setTodos(newTodos);
+  const handleComplete = () => {
+    console.log("handleComplete");
+    const element = document.getElementById(taskId);
+    if (element) {
+      element.classList.toggle("line-through");
+    }
   };
 
   return (
-    <section className="container min-h-[100vh] bg-white">
-      <div className="flex items-center pt-5 gap-4 justify-center">
+    <section className="container w-[600px] min-h-[100vh] bg-white">
+      <div className="flex items-center  pt-5 gap-4 justify-center container ">
         <input
           type="text"
           value={todo}
           onChange={handleChange}
-          className="relative w-[45%] py-[2px] px-3 outline-none border  border-mcolor rounded-lg "
+          className="relative w-[75%] py-[3px] px-3 outline-none border  border-mcolor rounded-lg "
           placeholder="Text here ..."
           required
         />
@@ -51,38 +50,51 @@ const RemainSec = () => {
           Save
         </button>
       </div>
-      <h1 className="text-xl font-bold text-green-600 mt-8 ml-[20%]">
-        Your Todos
-      </h1>
+      <div className=" container my-8 flex justify-between items-center w-[550px]">
+        <h1 className=" text-xl font-bold text-green-700">Your TODOS</h1>
+        <div className=" flex items-center gap-8">
+          <button
+            className="bg-green-700 h-[28px] hover:bg-green-800  hover:shadow-md  duration-500 active:scale-95
+          px-2 font-semibold rounded-lg text-center text-white"
+          >
+            Select All
+          </button>
+          <button
+            className="bg-green-700 h-[28px] hover:bg-green-800  hover:shadow-md  duration-500 active:scale-95
+          px-2 font-semibold rounded-lg text-center text-white"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
       {Todos.map((item) => {
         return (
           <div
             key={item.id}
-            className="mt-8 w-[100%] flex items-center  gap-[50px] justify-center"
+            className="mt-[2px] bg-slate-200 w-[500px] flex items-center  gap-[150px] justify-center container border-black border-b-[1px]"
           >
             <div className="flex gap-5 items-center w-[50%]">
-              <input
-                onChange={handleCheckbox}
-                name={item.id}
-                type="checkbox"
-                className="cursor-pointer"
-                value={item.isCompleted}
-              />
-              <div
-                // --- Class add nai ho rahi isCompleted ture hai ----------------------###########
-                className={item.isCompleted ? "line-through" : ""}
-              >
+              <input type="checkbox" className="cursor-pointer" />
+              <div id={taskId} className="mb-1">
                 {item.todo}
               </div>
             </div>
-            <div className="flex items-center justify-center gap-[20px]">
-              <FaEdit
+            <div className="flex items-center justify-center gap-[5px] ">
+              <BiEditAlt
                 // onClick={(e) => handleEditClick(e, item.id)}
-                className="w-[18px] h-[18px] cursor-pointer duration-500 active:scale-90"
+                className="w-[20px] h-[20px] cursor-pointer duration-500 active:scale-90"
               />
-              <MdDeleteSweep
+              <IoIosCopy
+                // onClick={(e) =>
+                className="w-[19px] h-[19px] cursor-pointer duration-500 active:scale-90 "
+              />
+              <IoIosCheckmarkCircleOutline
+                onClick={handleComplete}
+                className="w-[20px] h-[20px] cursor-pointer duration-500 active:scale-90 "
+              />
+              <TiDelete
                 // onClick={(e) => handleDeleteClick(e, item.id)}
-                className="w-[21px] h-[21px] cursor-pointer duration-500 active:scale-90 "
+                className="w-[25px] h-[25px] cursor-pointer duration-500 active:scale-90 "
               />
             </div>
           </div>
